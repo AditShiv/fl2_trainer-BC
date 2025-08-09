@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>F2L Trainer with Progress Save</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f4f8;
+    }
+    .trainer {
+      max-width: 900px;
+      margin: auto;
+    }
+    .case {
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .case h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    .meta {
+      margin-bottom: 10px;
+    }
+    .meta strong {
+      display: inline-block;
+      width: 80px;
+    }
+    .case img {
+      max-width: 200px;
+      display: block;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    .algo {
+      font-family: monospace;
+      background: #eef;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .status-label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .white { background-color: #ffffff; }
+    .yellow { background-color: #fff176; }
+    .green { background-color: #81c784; }
+  </style>
+  <script>
+    const states = [
+      { class: 'white', label: 'Not learnt (White)' },
+      { class: 'yellow', label: 'Learning (Yellow)' },
+      { class: 'green', label: 'Learnt (Green)' }
+    ];
+
+    function toggleCaseStatus(el, caseId) {
+      let current = states.findIndex(s => el.classList.contains(s.class));
+      let next = (current + 1) % states.length;
+
+      el.classList.remove(states[current].class);
+      el.classList.add(states[next].class);
+      el.querySelector('.status-label').textContent = states[next].label;
+
+      localStorage.setItem(`caseStatus-${caseId}`, next);
+    }
+
+    function restoreCaseStatus(el, caseId) {
+      let saved = localStorage.getItem(`caseStatus-${caseId}`);
+      let index = saved !== null ? parseInt(saved) : 0;
+
+      el.classList.add(states[index].class);
+      el.querySelector('.status-label').textContent = states[index].label;
+    }
+
+    window.onload = function() {
+      const cases = document.querySelectorAll('.case');
+      cases.forEach((el, i) => restoreCaseStatus(el, i));
+    };
+  </script>
+</head>
+<body>
+  <div class="trainer">
+    <h1>F2L Basic Cases</h1>
+
+    <div class="case" onclick="toggleCaseStatus(this, 0)">
+      <h2>Case 1</h2>
+      <div class="meta">
+        <p><strong>Step:</strong> F2L</p>
+        <p><strong>Algorithm:</strong> <span class="algo">R U R'</span></p>
+      </div>
+      <img src="https://solvethecube.com/img/cubes/xbxxyxxxrxxbxbxxbxwxxxrxxrx.png" alt="F2L Case 1">
+      <p class="status-label"></p>
+    </div>
+
+    <div class="case" onclick="toggleCaseStatus(this, 1)">
+      <h2>Case 2</h2>
+      <div class="meta">
+        <p><strong>Step:</strong> F2L</p>
+        <p><strong>Algorithm:</strong> <span class="algo">F' U' F</span></p>
+      </div>
+      <img src="https://solvethecube.com/img/cubes/xxxryxxxbxxwxbxxbxrxxxrxxrx.png" alt="F2L Case 2">
+      <p class="status-label"></p>
+    </div>
+
+    <div class="case" onclick="toggleCaseStatus(this, 2)">
+      <h2>Case 3</h2>
+      <div class="meta">
+        <p><strong>Step:</strong> F2L</p>
+        <p><strong>Algorithm:</strong> <span class="algo">U R U' R'</span></p>
+      </div>
+      <img src="https://solvethecube.com/img/cubes/xxxxybxxbxxwxbxxbxrrxxrxxrx.png" alt="F2L Case 3">
+      <p class="status-label"></p>
+    </div>
+
+    <div class="case" onclick="toggleCaseStatus(this, 3)">
+      <h2>Case 4</h2>
+      <div class="meta">
+        <p><strong>Step:</strong> F2L</p>
+        <p><strong>Algorithm:</strong> <span class="algo">U' F' U F</span></p>
+      </div>
+      <img src="https://solvethecube.com/img/cubes/xxxxyxxrrxbbxbxxbxwxxxrxxrx.png" alt="F2L Case 4">
+      <p class="status-label"></p>
+    </div>
+
+  </div>
+</body>
+</html>
